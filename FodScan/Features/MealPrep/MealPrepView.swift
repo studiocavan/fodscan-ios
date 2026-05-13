@@ -15,10 +15,28 @@ private struct MealTemplate {
 
 private let mealTemplates: [MealTemplate] = [
     MealTemplate(
+        name: "Greek Salad",
+        effort: "~10 min",
+        sfSymbol: "leaf.fill",
+        ingredients: ["cucumber", "tomato", "bell pepper", "lettuce", "olive oil", "vinegar", "salt", "black pepper"]
+    ),
+    MealTemplate(
         name: "Simple Omelette",
         effort: "~15 min",
         sfSymbol: "flame",
         ingredients: ["egg", "butter", "spinach", "salt", "black pepper"]
+    ),
+    MealTemplate(
+        name: "Shakshuka",
+        effort: "~25 min",
+        sfSymbol: "sun.horizon.fill",
+        ingredients: ["egg", "tomato", "bell pepper", "olive oil", "salt", "black pepper"]
+    ),
+    MealTemplate(
+        name: "Quinoa Tabbouleh",
+        effort: "~25 min",
+        sfSymbol: "leaf",
+        ingredients: ["quinoa", "tomato", "cucumber", "spinach", "olive oil", "vinegar", "salt"]
     ),
     MealTemplate(
         name: "Chicken Rice Bowl",
@@ -27,10 +45,22 @@ private let mealTemplates: [MealTemplate] = [
         ingredients: ["rice", "chicken", "bell pepper", "carrot", "zucchini", "soy sauce", "sesame oil", "salt"]
     ),
     MealTemplate(
+        name: "Baked Salmon & Veg",
+        effort: "~35 min",
+        sfSymbol: "fish.fill",
+        ingredients: ["salmon", "zucchini", "tomato", "bell pepper", "olive oil", "salt", "black pepper"]
+    ),
+    MealTemplate(
         name: "Roast Chicken & Veg",
         effort: "~1 hour",
         sfSymbol: "clock",
         ingredients: ["chicken", "potato", "carrot", "zucchini", "olive oil", "salt", "black pepper"]
+    ),
+    MealTemplate(
+        name: "Stuffed Bell Peppers",
+        effort: "~50 min",
+        sfSymbol: "circle.grid.2x2.fill",
+        ingredients: ["bell pepper", "rice", "beef", "tomato", "olive oil", "salt", "black pepper"]
     ),
 ]
 

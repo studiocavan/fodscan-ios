@@ -89,7 +89,7 @@ struct OnDeviceLLMClient {
             + "\n\nSuggest FODMAP ruleset entries for these ingredients. For accuracy feedback, suggest corrections where warranted."
 
         let response = try await researchSession.respond(to: prompt, generating: RulesetSuggestions.self)
-        return response.entries
+        return response.content.entries
     }
 }
 

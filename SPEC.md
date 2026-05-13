@@ -1,46 +1,47 @@
-# Low-FODMAP Scanner
+# FodScan
 
 iOS app for scanning grocery items and getting an instant verdict on whether they're safe for someone on a strict low-FODMAP diet (SIBO context).
 
 ## Goals
 
+- Work offline by default — ingredients mode requires no network
 - Scan a product in under one second from camera-up to verdict on screen
-- Work offline for the common case (90%+ of scans should not need a network call)
-- Personal tool first, not a productized app. Built for two users (me and my wife)
-- Use platform-native APIs for speed, fall back to LLM only when genuinely needed
+- Personal tool first, open sourced. Built for two users (me and my wife)
+- Use platform-native APIs throughout. No third-party dependencies
 
 ## Non-goals
 
-- Recipe logging, meal planning, symptom tracking. The existing app she uses handles this
+- Recipe logging, meal planning, symptom tracking. The existing app handles this
 - Multi-user features, social, sharing
 - Android support (revisit later if needed)
 - Generic dietary restrictions beyond low-FODMAP
 
 ## Architecture overview
 
-Four-tier resolution, fastest to slowest. Each tier only runs if the previous one cannot resolve.
+Two scan modes, one shared FODMAP engine.
 
-**Tier 1: Barcode → Open Food Facts**
-Scan UPC, look up in OFF, get ingredients string. Cached locally after first hit. Network round trip only on cache miss. Target: 200-500ms.
+**Ingredients mode (default)**
+Point camera at an ingredient panel, tap Analyze. VisionKit captures and OCR's the text, runs it through the local FODMAP engine. Fully offline. Target: under 400ms total.
 
-**Tier 2: On-device OCR**
-For unlabeled products or OFF misses, capture ingredient panel with VisionKit text recognition. All local, no network. Target: 100-300ms.
+**Barcode mode (requires internet)**
+Scan UPC, look up in Open Food Facts, get ingredients string. Cached locally after first hit so repeat scans are offline. Target: 200-500ms on first scan, <50ms on cache hit.
 
-**Tier 3: Local FODMAP engine**
-Normalize ingredient text, run against bundled ruleset, return verdict. Target: under 50ms.
+**FODMAP engine**
+Normalize ingredient text, run against bundled ruleset, return verdict. Runs on-device for both modes. Target: under 50ms.
 
-**Tier 4: LLM fallback (opt-in per scan)**
-For ambiguous results or "explain this verdict" requests, send ingredient text (not image) to Claude Haiku via Anthropic API. Not on the hot path. Target: 1-2s.
+**Apple Intelligence explanation (opt-in per scan)**
+On supported devices (iPhone 15 Pro and later), an "Explain" button on the verdict screen uses the on-device Foundation Models framework to explain the verdict in plain language. No network call, no API key required.
 
 ## Tech stack
 
 - iOS 17+ (iPhone target, do not block iPad)
 - Swift 5.10+, SwiftUI
-- VisionKit `DataScannerViewController` for barcode + text capture in one session
+- VisionKit `DataScannerViewController` for barcode + text capture
+- FoundationModels for on-device LLM explanation (iOS 18.1+, Apple Intelligence devices only)
 - Swift Concurrency throughout (async/await, actors for shared state)
 - SwiftData for local persistence (scan history, product cache, user overrides)
-- URLSession async API for OFF and Anthropic calls
-- No third-party dependencies for v1. Adding a dep is a deliberate decision
+- URLSession for Open Food Facts (barcode mode only)
+- No third-party dependencies
 
 ## Verdict model
 
@@ -49,17 +50,17 @@ Four states with associated colors:
 - `safe` (green): all ingredients match low-FODMAP-safe entries or are unknown-but-benign
 - `caution` (yellow): contains dose-dependent, ambiguous, or hidden-source ingredients
 - `avoid` (red): contains at least one high-confidence high-FODMAP ingredient
-- `unknown` (gray): not enough info to decide. Suggest manual check or LLM fallback
+- `unknown` (gray): not enough info to decide
 
 A single `avoid` hit dominates the verdict. Multiple `caution` hits stay `caution`. The verdict view shows which ingredient(s) triggered which level, never just the overall color.
 
 ## FODMAP ruleset
 
-Bundled as `Resources/fodmap_ingredients.json`. Schema:
+Bundled as `FodScan/Resources/fodmap_ingredients.json`. Schema:
 
 ```json
 {
-  "version": "2026-05-01",
+  "version": "2026-05-12",
   "entries": [
     {
       "name": "garlic",
@@ -67,88 +68,59 @@ Bundled as `Resources/fodmap_ingredients.json`. Schema:
       "status": "avoid",
       "category": "fructan",
       "notes": "High-FODMAP at any dose. Garlic-infused oil is safe (fructans are not oil-soluble)."
-    },
-    {
-      "name": "natural flavors",
-      "aliases": ["natural flavor", "natural flavoring"],
-      "status": "caution",
-      "category": "hidden_source",
-      "notes": "Often contains onion or garlic derivatives. Contact manufacturer for certainty."
     }
   ]
 }
 ```
 
-Bootstrap seed list by category:
+Categories covered: fructan, gos, lactose, excess_fructose, polyol, hidden_source.
 
-- **Fructans**: onion (all forms), garlic, leek, shallot, wheat (above trace), rye, barley, inulin, chicory root
-- **GOS**: lentils (above small portion), chickpeas (above small portion), kidney beans, soy beans
-- **Lactose**: milk, cream, yogurt, soft cheese, milk solids, whey concentrate
-- **Excess fructose**: honey, agave, HFCS, apple, pear, mango, watermelon
-- **Polyols**: sorbitol, mannitol, xylitol, isomalt, maltitol, erythritol (often tolerated, default caution)
-- **Hidden sources**: natural flavors, spices, seasonings, vegetable broth
-
-This list is a starting point. Expect to iterate based on actual labels encountered in real grocery trips.
+Matching uses whole-word boundary checks to avoid false positives (e.g. "corn" not firing inside "acorn" or "popcorn").
 
 ## Ingredient matching
 
-The FODMAP engine takes a raw ingredient string and returns a list of matches with status.
-
 Pipeline:
 1. Lowercase, strip punctuation except commas and parentheses
-2. Split on commas, respecting parenthetical groupings (parentheticals are sub-ingredients, recurse into them)
-3. For each token, run normalized substring match against entries + aliases
-4. Aggregate: highest severity wins overall, return all matched ingredients with their reasons
-
-Edge cases to handle:
-- "Contains 2% or less of: X, Y, Z" should still be parsed
-- "May contain" allergen statements are not ingredients, skip them
-- Trace amounts ("wheat starch") vs material amounts (wheat flour as primary) is hard to distinguish from a label alone. Default trace-ish phrasing to caution
+2. Split on commas, respecting parenthetical groupings (sub-ingredients, recurse)
+3. Strip "may contain" allergen statements
+4. Strip "contains X% or less of:" preambles (keep the ingredients after)
+5. For each token, run whole-word match against entries + aliases
+6. Aggregate: highest severity wins overall, return all matched ingredients with reasons
 
 ## Data sources
 
 ### Open Food Facts (https://world.openfoodfacts.org)
 
-- Free, open, no auth required
+- Free, open, ODbL licensed — attribution required (credit in Settings)
 - Endpoint: `GET /api/v2/product/{barcode}.json`
-- Fields needed: `ingredients_text`, `product_name`, `brands`, `image_url`
-- Cache responses indefinitely keyed by barcode. Refresh on explicit user pull-to-refresh
-- Be a good citizen: set a meaningful User-Agent identifying the app
-
-### Anthropic API (Tier 4 fallback)
-
-- Model: Claude Haiku 4.5 (`claude-haiku-4-5-20251001`)
-- API key stored in Keychain, set via Settings screen (per-device, not bundled)
-- Prompt: structured, ingredient list in, JSON verdict out, ask for reasoning
-- Volume is negligible at personal-use scale, no rate-limit concerns
+- Fields needed: `ingredients_text`, `product_name`, `brands`
+- Cache responses in SwiftData keyed by barcode. Refresh on explicit pull-to-refresh
+- User-Agent: `FodScan/1.0 (com.studiocavan.fodscan)`
 
 ## Persistence (SwiftData)
 
 Entities:
 
-- `ScanRecord`: timestamp, barcode (nullable), product name, ingredients text, verdict, source (off / ocr / manual), llm_called bool
-- `ProductCache`: barcode, product name, brand, ingredients text, image URL, fetched_at
-- `IngredientOverride`: ingredient name, status, note. User can mark something safe-for-me or trigger-for-me
-
-Scan history view shows recent scans grouped by day, lets her tap in to see ingredient breakdown again.
+- `ScanRecord`: timestamp, barcode (nullable), product name, verdict, flagged ingredients
+- `ProductCache`: barcode, product name, brand, ingredients text, fetched_at *(not yet implemented)*
+- `IngredientOverride`: ingredient name, status, note *(not yet implemented)*
 
 ## Permissions
 
-Info.plist keys required:
-
 - `NSCameraUsageDescription`: "Scan product barcodes and ingredient labels"
-- `NSPhotoLibraryUsageDescription`: only if adding "import from photo" later
 
-No location, contacts, tracking, or analytics. Personal app, stays personal.
+No location, contacts, tracking, or analytics.
 
 ## Project structure
 
 ```
-LowFodmapScanner/
+FodScan/
   App/
-    LowFodmapScannerApp.swift
-    AppContainer.swift              // dependency container
+    FodScanApp.swift
+    AppContainer.swift
   Features/
+    Home/
+      HomeView.swift
     Scanner/
       ScannerView.swift
       ScannerViewModel.swift
@@ -158,6 +130,10 @@ LowFodmapScanner/
       IngredientBreakdownView.swift
     History/
       HistoryView.swift
+    Explore/
+      ExploreSafeFoodsView.swift
+    MealPrep/
+      MealPrepView.swift
     Settings/
       SettingsView.swift
   Core/
@@ -165,71 +141,57 @@ LowFodmapScanner/
       FodmapEngine.swift
       IngredientNormalizer.swift
       RulesetLoader.swift
+      VerdictStatus.swift
     OpenFoodFacts/
       OpenFoodFactsClient.swift
       OFFProduct.swift
     LLM/
-      AnthropicClient.swift
+      OnDeviceLLMClient.swift
     Persistence/
-      Models.swift                  // SwiftData @Model classes
+      Models.swift
       Persistence.swift
   Resources/
     fodmap_ingredients.json
-  Tests/
-    FodmapEngineTests.swift
-    IngredientNormalizerTests.swift
-    OpenFoodFactsClientTests.swift
+    Assets.xcassets/
+Tests/
+  FodmapEngineTests.swift
+  IngredientNormalizerTests.swift
+  OpenFoodFactsClientTests.swift
 ```
 
 ## Milestones
 
-Sized for evening sessions. Adjust to reality.
+**M1–M4: Complete**
+Scanner, OFF integration, FODMAP engine, OCR ingredients mode.
 
-**M1: Skeleton scanner**
-Wire DataScannerViewController, scan a barcode, log it to console. No UI polish, no verdict.
-
-**M2: OFF integration**
-Hit Open Food Facts on barcode scan, parse ingredients, show raw text on screen.
-
-**M3: FODMAP engine + ruleset**
-Build the matcher, seed the JSON ruleset, render verdict UI. First useful version.
-
-**M4: OCR fallback**
-When OFF misses, switch to text mode in DataScanner, capture ingredient panel, run through engine.
-
-**M5: Persistence**
-SwiftData models, scan history view, product cache.
+**M5: Persistence — in progress**
+`ScanRecord` and history view done. `ProductCache` (offline barcode repeat scans) and `IngredientOverride` (safe-for-me / trigger-for-me) still to implement.
 
 **M6: TestFlight + grocery store test**
-Paid Developer account, archive, upload, invite wife. Real-world test trip.
+Archive, upload, invite wife. Real-world test trip.
 
-**M7: LLM fallback + ingredient overrides**
-Anthropic client, "explain this" button on verdict screen, Settings for API key, override editor.
-
-**M8: Polish**
-Empty states, network errors, scan haptics, dark mode pass, app icon, launch screen.
+**M7: Polish**
+Empty states, network error handling, scan haptics, dark mode pass, OFF attribution in Settings, product cache, ingredient overrides.
 
 ## Open questions
 
-Decisions needed before locking down ruleset behavior:
-
 1. **Phase**: strict elimination or reintroduction? Affects whether dose-dependent items default to caution or avoid
-2. **Personal triggers** beyond standard low-FODMAP? Some people react to extras
-3. **Erythritol stance**: technically allowed in small doses for many. Default caution or safe?
-4. **Garlic-infused oil exception**: include the nuance in matching logic or just flag all garlic mentions for safety?
+2. **Personal triggers** beyond standard low-FODMAP?
+3. **Erythritol stance**: technically allowed in small doses for many. Currently defaulting to caution
+4. **Explore Safe Foods**: browse ruleset by category — useful for grocery planning without scanning
+5. **Meal Prep**: feature not yet designed — what should it do?
 
-## Future maybes (not v1)
+## Future maybes
 
-- Apple Watch companion: red/green haptic when verdict lands, no need to look at phone in a crowded aisle
-- Symptom log integration with the existing app (if it exports)
-- Upstream fixes to Open Food Facts when entries are wrong or missing
-- Recipe scanning: OCR a recipe card, surface issues, suggest swaps
-- Live Activities for in-progress scans
+- Apple Watch companion: red/green haptic when verdict lands
+- Celiac mode: separate gluten ruleset, flag both in one scan for mixed households
 - iCloud sync of overrides and history across devices
+- Upstream fixes to Open Food Facts when entries are wrong
+- Recipe scanning: OCR a recipe card, surface issues, suggest swaps
 
 ## References
 
-- Open Food Facts API docs: https://wiki.openfoodfacts.org/API
+- Open Food Facts API: https://wiki.openfoodfacts.org/API
 - VisionKit DataScannerViewController: https://developer.apple.com/documentation/visionkit/datascannerviewcontroller
-- Monash University FODMAP program (authoritative source, paid app): https://www.monashfodmap.com
-- Anthropic API docs: https://docs.claude.com
+- FoundationModels: https://developer.apple.com/documentation/foundationmodels
+- Monash University FODMAP program: https://www.monashfodmap.com

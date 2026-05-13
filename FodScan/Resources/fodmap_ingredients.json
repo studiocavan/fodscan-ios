@@ -1,0 +1,814 @@
+{
+  "version": "2026-05-12",
+  "entries": [
+    {
+      "name": "onion",
+      "aliases": ["onion powder", "onion extract", "dehydrated onion", "dried onion", "onion salt", "onion flakes", "caramelized onion", "green onion", "spring onion", "scallion"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "High-FODMAP at any dose. All forms. Green onion tops (green part only) are low-FODMAP."
+    },
+    {
+      "name": "garlic",
+      "aliases": ["garlic powder", "garlic extract", "dehydrated garlic", "roasted garlic", "garlic salt", "garlic flakes", "black garlic", "garlic granules"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "High-FODMAP at any dose. Garlic-infused oil is safe — fructans are not oil-soluble."
+    },
+    {
+      "name": "leek",
+      "aliases": ["leek powder", "leek extract", "dried leek"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "Leek leaves (green tops) are lower FODMAP; bulb/white part is high."
+    },
+    {
+      "name": "shallot",
+      "aliases": ["shallot powder", "dried shallot", "eschallot"],
+      "status": "avoid",
+      "category": "fructan"
+    },
+    {
+      "name": "wheat",
+      "aliases": ["wheat flour", "whole wheat", "wheat starch", "wheat protein", "wheat gluten", "enriched wheat flour", "whole grain wheat", "durum wheat", "semolina", "spelt", "kamut", "farro", "emmer"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "High-FODMAP in material amounts. Some highly processed wheat derivatives (wheat dextrose, wheat-based glucose syrup) may be tolerated."
+    },
+    {
+      "name": "rye",
+      "aliases": ["rye flour", "whole rye", "rye meal"],
+      "status": "avoid",
+      "category": "fructan"
+    },
+    {
+      "name": "barley",
+      "aliases": ["barley flour", "barley malt", "malted barley", "pearl barley", "barley extract", "pot barley"],
+      "status": "avoid",
+      "category": "fructan"
+    },
+    {
+      "name": "inulin",
+      "aliases": ["chicory inulin", "inulin fiber", "agavin"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "Commonly added as prebiotic fiber. Check fiber blend ingredients."
+    },
+    {
+      "name": "chicory root",
+      "aliases": ["chicory root fiber", "chicory extract", "chicory fiber", "roasted chicory"],
+      "status": "avoid",
+      "category": "fructan"
+    },
+    {
+      "name": "asparagus",
+      "aliases": ["asparagus extract", "asparagus powder", "asparagus tips"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "High in both fructans and fructose. High-FODMAP at any typical serving."
+    },
+    {
+      "name": "artichoke",
+      "aliases": ["globe artichoke", "artichoke heart", "artichoke extract", "artichoke powder", "jerusalem artichoke", "sunchoke", "artichoke flour"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "Globe and Jerusalem artichoke both very high in fructans. Jerusalem artichoke is among the highest FODMAP vegetables."
+    },
+    {
+      "name": "beetroot",
+      "aliases": ["beet", "beets", "red beet", "beet juice", "beet powder", "beet extract", "dried beet", "beet root"],
+      "status": "caution",
+      "category": "fructan",
+      "notes": "High-FODMAP above ~2 slices (60g). Small amounts may be tolerated."
+    },
+    {
+      "name": "fennel bulb",
+      "aliases": ["fennel", "finocchio"],
+      "status": "caution",
+      "category": "fructan",
+      "notes": "High-FODMAP above ~1 cup. Fennel seeds are low-FODMAP."
+    },
+    {
+      "name": "savoy cabbage",
+      "aliases": ["savoy", "curly cabbage"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "High in fructans. Green and red cabbage are lower-FODMAP alternatives."
+    },
+    {
+      "name": "snow peas",
+      "aliases": ["mangetout", "sugar snap peas", "snap peas"],
+      "status": "caution",
+      "category": "fructan",
+      "notes": "High-FODMAP above ~5 pods. Contains both fructans and mannitol."
+    },
+    {
+      "name": "raisins",
+      "aliases": ["sultanas", "currants", "dried grapes", "golden raisins"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "Drying concentrates fructans. High-FODMAP at any typical serving."
+    },
+    {
+      "name": "dates",
+      "aliases": ["medjool dates", "dried dates", "date paste", "date syrup", "date sugar", "pitted dates"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "Very high in fructans and excess fructose. Common in energy bars and natural sweeteners."
+    },
+    {
+      "name": "dried figs",
+      "aliases": ["fig", "figs", "fig paste", "fig jam", "fig extract", "fig powder"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "High in fructans and excess fructose. Fresh figs are also high-FODMAP."
+    },
+    {
+      "name": "wheat bran",
+      "aliases": ["oat bran", "bran", "wheat bran fiber"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "Concentrates fructans. Often added to cereals and fiber supplements."
+    },
+    {
+      "name": "fructooligosaccharides",
+      "aliases": ["fos", "fructo-oligosaccharides", "oligofructose", "oligofructose-enriched inulin", "short-chain fructooligosaccharides", "scfos"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "Prebiotic fiber added to supplements, protein bars, and fortified foods. Highly fermentable."
+    },
+    {
+      "name": "lentils",
+      "aliases": ["lentil flour", "red lentils", "green lentils", "brown lentils", "lentil protein"],
+      "status": "caution",
+      "category": "gos",
+      "notes": "High-FODMAP above ~1/4 cup canned (drained and rinsed). Small amounts may be tolerated."
+    },
+    {
+      "name": "chickpeas",
+      "aliases": ["garbanzo beans", "garbanzo", "chickpea flour", "besan", "gram flour"],
+      "status": "caution",
+      "category": "gos",
+      "notes": "High-FODMAP above ~1/4 cup canned (drained and rinsed)."
+    },
+    {
+      "name": "kidney beans",
+      "aliases": ["red kidney beans", "white kidney beans", "cannellini beans"],
+      "status": "avoid",
+      "category": "gos"
+    },
+    {
+      "name": "black beans",
+      "aliases": ["black turtle beans"],
+      "status": "avoid",
+      "category": "gos"
+    },
+    {
+      "name": "soybeans",
+      "aliases": ["soy flour", "whole soy", "soybean", "edamame", "soy milk", "soymilk", "soy beverage", "silken tofu", "soft tofu"],
+      "status": "avoid",
+      "category": "gos",
+      "notes": "Soy protein isolate and soy lecithin are generally safe. Firm tofu is low-FODMAP."
+    },
+    {
+      "name": "cashews",
+      "aliases": ["cashew", "cashew nuts", "cashew butter", "cashew cream", "cashew milk", "cashew flour", "cashew pieces"],
+      "status": "avoid",
+      "category": "gos",
+      "notes": "High-FODMAP at any dose. One of the highest GOS nuts."
+    },
+    {
+      "name": "pistachios",
+      "aliases": ["pistachio", "pistachio nuts", "pistachio butter", "pistachio paste"],
+      "status": "avoid",
+      "category": "gos",
+      "notes": "High-FODMAP at any dose. High in both GOS and fructans."
+    },
+    {
+      "name": "navy beans",
+      "aliases": ["haricot beans", "haricot", "baked beans", "boston beans", "pea beans"],
+      "status": "avoid",
+      "category": "gos",
+      "notes": "No low-FODMAP serving size. Foundation of most canned baked beans."
+    },
+    {
+      "name": "split peas",
+      "aliases": ["green split peas", "yellow split peas", "split pea", "dried peas"],
+      "status": "avoid",
+      "category": "gos",
+      "notes": "No low-FODMAP threshold per Monash testing."
+    },
+    {
+      "name": "butter beans",
+      "aliases": ["lima beans", "broad beans", "fava beans", "fava"],
+      "status": "caution",
+      "category": "gos",
+      "notes": "High-FODMAP above 1/4 cup canned (drained and rinsed). Also contains fructans at larger servings."
+    },
+    {
+      "name": "pinto beans",
+      "aliases": ["borlotti beans", "cranberry beans", "roman beans"],
+      "status": "avoid",
+      "category": "gos"
+    },
+    {
+      "name": "mung beans",
+      "aliases": ["mung dal", "moong dal", "mung bean sprouts"],
+      "status": "caution",
+      "category": "gos",
+      "notes": "High-FODMAP above 1/4 cup. Sprouted mung beans are lower-FODMAP."
+    },
+    {
+      "name": "almonds",
+      "aliases": ["almond flour", "almond meal", "almond butter", "almond milk", "almond extract", "almond paste", "marzipan"],
+      "status": "caution",
+      "category": "gos",
+      "notes": "High-FODMAP above ~10 nuts. Small amounts (10 nuts) are low-FODMAP."
+    },
+    {
+      "name": "hazelnuts",
+      "aliases": ["hazelnut", "hazelnut butter", "hazelnut paste", "hazelnut flour", "filberts"],
+      "status": "caution",
+      "category": "gos",
+      "notes": "High-FODMAP above ~10 nuts."
+    },
+    {
+      "name": "milk",
+      "aliases": ["whole milk", "skim milk", "low-fat milk", "nonfat milk", "dried milk", "milk powder", "milk solids", "condensed milk", "evaporated milk"],
+      "status": "caution",
+      "category": "lactose",
+      "notes": "Lactose-free milk is safe. Hard cheeses and butter are also safe."
+    },
+    {
+      "name": "cream",
+      "aliases": ["heavy cream", "light cream", "half and half", "double cream", "single cream"],
+      "status": "caution",
+      "category": "lactose",
+      "notes": "Small amounts (1 tbsp) may be tolerated."
+    },
+    {
+      "name": "sour cream",
+      "aliases": ["soured cream"],
+      "status": "caution",
+      "category": "lactose"
+    },
+    {
+      "name": "yogurt",
+      "aliases": ["plain yogurt", "greek yogurt", "low-fat yogurt", "yoghurt"],
+      "status": "caution",
+      "category": "lactose",
+      "notes": "Lactose-free yogurt is safe."
+    },
+    {
+      "name": "whey concentrate",
+      "aliases": ["whey", "whey protein concentrate", "milk protein concentrate", "milk protein isolate"],
+      "status": "caution",
+      "category": "lactose",
+      "notes": "Whey protein isolate is generally safe (lactose removed)."
+    },
+    {
+      "name": "ice cream",
+      "aliases": ["gelato", "frozen yogurt", "fro-yo", "frozen custard", "soft serve", "ice milk"],
+      "status": "avoid",
+      "category": "lactose",
+      "notes": "Lactose-free ice cream is safe. Also check for high-FODMAP fruit additions."
+    },
+    {
+      "name": "ricotta",
+      "aliases": ["ricotta cheese", "ricotta salata"],
+      "status": "caution",
+      "category": "lactose",
+      "notes": "High-FODMAP above 2 tablespoons (40g). Contains more lactose than hard cheeses."
+    },
+    {
+      "name": "cream cheese",
+      "aliases": ["mascarpone", "mascarpone cheese", "fromage frais", "quark"],
+      "status": "caution",
+      "category": "lactose",
+      "notes": "High-FODMAP above ~2 tablespoons. Mascarpone is especially high in lactose."
+    },
+    {
+      "name": "cottage cheese",
+      "aliases": ["queso fresco", "pot cheese", "farmer's cheese"],
+      "status": "caution",
+      "category": "lactose",
+      "notes": "High-FODMAP above 4 tablespoons. High lactose for a fresh cheese."
+    },
+    {
+      "name": "custard",
+      "aliases": ["custard powder", "egg custard", "vanilla custard", "creme anglaise", "creme patissiere"],
+      "status": "caution",
+      "category": "lactose"
+    },
+    {
+      "name": "milk chocolate",
+      "aliases": ["milk choc", "chocolate milk", "hot chocolate", "cocoa mix", "drinking chocolate"],
+      "status": "caution",
+      "category": "lactose",
+      "notes": "High-FODMAP above ~30g (1 oz). Dark chocolate (>70% cocoa) is lower-FODMAP in small serves."
+    },
+    {
+      "name": "honey",
+      "aliases": ["raw honey", "wildflower honey", "clover honey", "manuka honey"],
+      "status": "avoid",
+      "category": "excess_fructose"
+    },
+    {
+      "name": "agave",
+      "aliases": ["agave nectar", "agave syrup", "blue agave", "agave juice"],
+      "status": "avoid",
+      "category": "excess_fructose"
+    },
+    {
+      "name": "high fructose corn syrup",
+      "aliases": ["hfcs", "corn syrup high fructose", "high-fructose corn syrup", "glucose-fructose syrup", "isoglucose"],
+      "status": "avoid",
+      "category": "excess_fructose"
+    },
+    {
+      "name": "apple",
+      "aliases": ["apple juice", "apple concentrate", "dried apple", "apple powder", "apple extract"],
+      "status": "avoid",
+      "category": "excess_fructose"
+    },
+    {
+      "name": "pear",
+      "aliases": ["pear juice", "pear concentrate", "dried pear"],
+      "status": "avoid",
+      "category": "excess_fructose"
+    },
+    {
+      "name": "mango",
+      "aliases": ["mango juice", "dried mango", "mango powder", "mango concentrate"],
+      "status": "avoid",
+      "category": "excess_fructose"
+    },
+    {
+      "name": "watermelon",
+      "aliases": ["watermelon juice", "watermelon extract"],
+      "status": "avoid",
+      "category": "excess_fructose"
+    },
+    {
+      "name": "cherry",
+      "aliases": ["cherries", "tart cherry", "sour cherry", "sweet cherry", "cherry juice", "cherry concentrate", "maraschino cherry", "dried cherry", "black cherry"],
+      "status": "avoid",
+      "category": "excess_fructose",
+      "notes": "High in both excess fructose and sorbitol. High-FODMAP at any typical serving."
+    },
+    {
+      "name": "peach",
+      "aliases": ["peaches", "peach juice", "peach puree", "peach concentrate", "dried peach", "nectarine", "nectarines"],
+      "status": "avoid",
+      "category": "excess_fructose",
+      "notes": "High in sorbitol and excess fructose. Nectarines are similarly high-FODMAP."
+    },
+    {
+      "name": "plum",
+      "aliases": ["plums", "prune", "prunes", "prune juice", "dried plum", "damson", "greengages"],
+      "status": "avoid",
+      "category": "excess_fructose",
+      "notes": "High in sorbitol. Prunes (dried plums) are especially concentrated and also used as a natural sweetener."
+    },
+    {
+      "name": "fig",
+      "aliases": ["fresh figs", "fig puree", "fig concentrate"],
+      "status": "avoid",
+      "category": "excess_fructose",
+      "notes": "High in excess fructose and fructans."
+    },
+    {
+      "name": "concentrated fruit juice",
+      "aliases": ["fruit juice concentrate", "fruit concentrate", "fruit extract", "juice concentrate", "apple juice concentrate", "pear juice concentrate", "grape juice concentrate", "white grape juice concentrate"],
+      "status": "avoid",
+      "category": "excess_fructose",
+      "notes": "Concentrates all FODMAPs. Common sweetener in 'natural' and 'no added sugar' products."
+    },
+    {
+      "name": "grape",
+      "aliases": ["grapes", "grape juice", "grape extract", "ripe grape", "sultana grape"],
+      "status": "caution",
+      "category": "excess_fructose",
+      "notes": "High-FODMAP above ~10 grapes. Small servings may be tolerated."
+    },
+    {
+      "name": "boysenberry",
+      "aliases": ["boysenberries", "boysenberry juice"],
+      "status": "avoid",
+      "category": "excess_fructose"
+    },
+    {
+      "name": "sorbitol",
+      "aliases": ["d-sorbitol", "glucitol", "e420"],
+      "status": "avoid",
+      "category": "polyol"
+    },
+    {
+      "name": "mannitol",
+      "aliases": ["d-mannitol", "e421"],
+      "status": "avoid",
+      "category": "polyol"
+    },
+    {
+      "name": "xylitol",
+      "aliases": ["e967"],
+      "status": "avoid",
+      "category": "polyol"
+    },
+    {
+      "name": "isomalt",
+      "aliases": ["e953"],
+      "status": "avoid",
+      "category": "polyol"
+    },
+    {
+      "name": "maltitol",
+      "aliases": ["maltitol syrup", "e965"],
+      "status": "avoid",
+      "category": "polyol"
+    },
+    {
+      "name": "erythritol",
+      "aliases": ["e968"],
+      "status": "caution",
+      "category": "polyol",
+      "notes": "Often tolerated in small doses by many people. Defaulting to caution pending personal assessment."
+    },
+    {
+      "name": "lactitol",
+      "aliases": ["e966", "lactit"],
+      "status": "avoid",
+      "category": "polyol",
+      "notes": "Used in sugar-free products and some laxatives."
+    },
+    {
+      "name": "polydextrose",
+      "aliases": ["e1200"],
+      "status": "caution",
+      "category": "polyol",
+      "notes": "Synthetic prebiotic fiber; may trigger symptoms in sensitive individuals."
+    },
+    {
+      "name": "mushrooms",
+      "aliases": ["mushroom", "shiitake", "portobello", "button mushroom", "cremini", "oyster mushroom", "mushroom extract", "mushroom powder", "dried mushroom", "mushroom broth"],
+      "status": "avoid",
+      "category": "polyol",
+      "notes": "Monash retesting found button mushrooms contain both mannitol AND fructans (not just mannitol). All common varieties are high-FODMAP. Broth and powder concentrate both FODMAPs."
+    },
+    {
+      "name": "cauliflower",
+      "aliases": ["cauliflower florets", "cauliflower rice", "cauliflower powder", "dried cauliflower"],
+      "status": "avoid",
+      "category": "polyol",
+      "notes": "High in mannitol. High-FODMAP at any typical serving."
+    },
+    {
+      "name": "celery",
+      "aliases": ["celery seed", "celery extract", "celery juice", "celery powder", "celeriac", "celery root"],
+      "status": "caution",
+      "category": "polyol",
+      "notes": "High-FODMAP above 1/2 stalk. Celeriac (celery root) is also high in mannitol."
+    },
+    {
+      "name": "avocado",
+      "aliases": ["avocado puree", "guacamole", "mashed avocado"],
+      "status": "caution",
+      "category": "polyol",
+      "notes": "Monash retested 2024: contains perseitol (not sorbitol). Safe threshold doubled to 60g (~3 tbsp or 1/8 medium avocado). Still avoid above that. Avocado oil is low-FODMAP — perseitol does not transfer to the refined oil."
+    },
+    {
+      "name": "blackberries",
+      "aliases": ["blackberry", "blackberry juice", "blackberry extract", "dewberry", "marionberry"],
+      "status": "avoid",
+      "category": "excess_fructose",
+      "notes": "Monash retesting found excess fructose as the primary FODMAP (previously classified as sorbitol). Still avoid at any typical serving."
+    },
+    {
+      "name": "lychee",
+      "aliases": ["litchi", "lichee", "lychee juice", "dried lychee"],
+      "status": "avoid",
+      "category": "polyol",
+      "notes": "High in sorbitol and excess fructose."
+    },
+    {
+      "name": "longan",
+      "aliases": ["dragon eye fruit", "dried longan"],
+      "status": "avoid",
+      "category": "polyol",
+      "notes": "High in sorbitol."
+    },
+    {
+      "name": "apricot",
+      "aliases": ["apricots", "dried apricot", "dried apricots", "apricot juice", "apricot concentrate", "apricot puree", "apricot paste", "apricot jam"],
+      "status": "avoid",
+      "category": "polyol",
+      "notes": "High in sorbitol. High-FODMAP above 1 small apricot (25g). Dried apricots are even more concentrated."
+    },
+    {
+      "name": "oat milk",
+      "aliases": ["oat beverage", "oat drink", "oat-based milk"],
+      "status": "avoid",
+      "category": "fructan",
+      "notes": "High-FODMAP at a standard 250ml serving — contains fructans and GOS. Low-FODMAP only at tiny amounts (~30ml). Not a suitable everyday milk alternative on a low-FODMAP diet."
+    },
+    {
+      "name": "coconut milk",
+      "aliases": ["canned coconut milk", "coconut cream", "coconut beverage", "coconut drink", "coconut milk powder"],
+      "status": "caution",
+      "category": "gos",
+      "notes": "Low-FODMAP up to 125ml (½ cup) UHT/carton. High-FODMAP above 125ml due to oligosaccharides. Avoid brands with added inulin or chicory. Coconut water and coconut oil are safe."
+    },
+    {
+      "name": "natural flavors",
+      "aliases": ["natural flavor", "natural flavoring", "natural flavorings", "natural smoke flavor"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "Often contains onion or garlic derivatives. Contact manufacturer for certainty."
+    },
+    {
+      "name": "spices",
+      "aliases": ["spice", "spice blend", "mixed spices", "spice extract"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "May contain onion or garlic powder."
+    },
+    {
+      "name": "seasonings",
+      "aliases": ["seasoning", "seasoning blend", "seasoning mix"],
+      "status": "caution",
+      "category": "hidden_source"
+    },
+    {
+      "name": "vegetable broth",
+      "aliases": ["vegetable stock", "vegetable bouillon", "vegetable extract", "vegetable powder"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "Almost always contains onion and garlic."
+    },
+    {
+      "name": "chicken broth",
+      "aliases": ["chicken stock", "chicken bouillon", "chicken broth powder", "bone broth", "beef broth", "beef stock", "beef bouillon", "bone stock", "meat broth", "meat stock"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "Commercial broths almost always contain onion and garlic. Homemade broth using only safe aromatics is fine."
+    },
+    {
+      "name": "bouillon cube",
+      "aliases": ["stock cube", "broth cube", "soup base", "soup mix", "bouillon powder"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "Nearly all commercial bouillon contains onion and garlic. Check label carefully."
+    },
+    {
+      "name": "worcestershire sauce",
+      "aliases": ["worcestershire", "HP sauce", "steak sauce", "A1 sauce"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "Contains garlic, onion, and sometimes tamarind. Small amounts in a recipe may be tolerable."
+    },
+    {
+      "name": "soy sauce",
+      "aliases": ["shoyu", "tamari", "light soy sauce", "dark soy sauce", "reduced-sodium soy sauce", "liquid aminos", "coconut aminos"],
+      "status": "safe",
+      "category": "safe_additive",
+      "notes": "Monash-tested low-FODMAP at up to 42g (2 tbsp) — fermentation breaks down wheat fructans. Contains gluten; celiac patients should use certified GF tamari instead."
+    },
+    {
+      "name": "tomato paste",
+      "aliases": ["tomato puree", "double concentrate tomato paste", "tomato concentrate"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "High-FODMAP above ~2 tablespoons (28g) due to concentrated fructose. Small amounts are fine."
+    },
+    {
+      "name": "bbq sauce",
+      "aliases": ["barbecue sauce", "barbeque sauce", "honey bbq sauce", "smoky bbq sauce"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "Typically contains garlic, onion, and high fructose corn syrup or honey."
+    },
+    {
+      "name": "teriyaki sauce",
+      "aliases": ["teriyaki marinade", "teriyaki glaze"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "Soy sauce itself is low-FODMAP, but teriyaki sauce typically contains garlic and often honey or HFCS — the real triggers."
+    },
+    {
+      "name": "miso",
+      "aliases": ["miso paste", "white miso", "red miso", "yellow miso", "shiro miso", "miso soup"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "High-FODMAP above ~2 teaspoons (12g) due to GOS from soybeans. Small amounts may be tolerated."
+    },
+    {
+      "name": "fruit pectin",
+      "aliases": ["pectin", "apple pectin", "citrus pectin", "modified citrus pectin"],
+      "status": "caution",
+      "category": "hidden_source",
+      "notes": "Fermentable fiber; large amounts (as in high-pectin jams) may cause symptoms."
+    },
+
+    { "name": "rice",
+      "aliases": ["white rice", "brown rice", "rice flour", "rice starch", "rice bran", "puffed rice", "rice syrup", "rice malt syrup", "basmati", "jasmine rice", "glutinous rice", "rice cereal"],
+      "status": "safe", "category": "safe_grain" },
+    { "name": "oats",
+      "aliases": ["rolled oats", "oat flour", "oatmeal", "whole oats", "steel cut oats", "oat groats", "quick oats", "instant oats"],
+      "status": "safe", "category": "safe_grain",
+      "notes": "Low-FODMAP up to 52g (1/2 cup) per serving. Choose certified gluten-free oats if also avoiding cross-contact." },
+    { "name": "quinoa",
+      "aliases": ["quinoa flour", "puffed quinoa", "quinoa flakes"],
+      "status": "safe", "category": "safe_grain" },
+    { "name": "tapioca",
+      "aliases": ["tapioca starch", "tapioca flour", "cassava starch", "cassava flour", "arrowroot", "arrowroot starch", "arrowroot flour"],
+      "status": "safe", "category": "safe_grain" },
+    { "name": "corn starch",
+      "aliases": ["maize starch", "cornflour", "corn syrup", "glucose syrup", "glucose-fructose syrup (low)"],
+      "status": "safe", "category": "safe_grain",
+      "notes": "Pure corn starch and glucose syrup (not high-fructose) are low-FODMAP." },
+    { "name": "potato starch",
+      "aliases": ["potato starch flour"],
+      "status": "safe", "category": "safe_grain" },
+    { "name": "buckwheat",
+      "aliases": ["buckwheat flour", "kasha", "buckwheat groats"],
+      "status": "safe", "category": "safe_grain" },
+    { "name": "sorghum",
+      "aliases": ["sorghum flour", "sorghum syrup"],
+      "status": "safe", "category": "safe_grain" },
+    { "name": "millet",
+      "aliases": ["millet flour", "puffed millet"],
+      "status": "safe", "category": "safe_grain" },
+
+    { "name": "sugar",
+      "aliases": ["cane sugar", "raw sugar", "brown sugar", "demerara sugar", "turbinado sugar", "sucrose", "confectioners sugar", "powdered sugar", "icing sugar", "beet sugar", "granulated sugar", "golden syrup", "treacle"],
+      "status": "safe", "category": "safe_sweetener" },
+    { "name": "glucose",
+      "aliases": ["dextrose", "maltodextrin", "maltose"],
+      "status": "safe", "category": "safe_sweetener" },
+    { "name": "maple syrup",
+      "aliases": ["pure maple syrup", "maple extract"],
+      "status": "safe", "category": "safe_sweetener",
+      "notes": "Low-FODMAP up to 2 tablespoons (53g)." },
+    { "name": "stevia",
+      "aliases": ["stevia extract", "rebaudioside", "rebaudioside a", "steviol glycosides", "monk fruit", "monk fruit extract", "monk fruit sweetener", "lo han guo", "luo han guo"],
+      "status": "safe", "category": "safe_sweetener" },
+
+    { "name": "olive oil",
+      "aliases": ["extra virgin olive oil", "extra-virgin olive oil", "light olive oil"],
+      "status": "safe", "category": "safe_fat" },
+    { "name": "vegetable oil",
+      "aliases": ["sunflower oil", "canola oil", "rapeseed oil", "safflower oil", "grapeseed oil", "avocado oil", "soybean oil", "refined coconut oil", "coconut oil", "palm oil", "rice bran oil", "sesame oil"],
+      "status": "safe", "category": "safe_fat" },
+    { "name": "butter",
+      "aliases": ["salted butter", "unsalted butter", "clarified butter", "ghee", "spreadable butter"],
+      "status": "safe", "category": "safe_fat" },
+    { "name": "garlic-infused oil",
+      "aliases": ["garlic oil", "garlic infused oil", "onion-infused oil", "onion infused oil"],
+      "status": "safe", "category": "safe_fat",
+      "notes": "Fructans are not oil-soluble. Infused oils are safe even though the source vegetables are high-FODMAP." },
+
+    { "name": "egg",
+      "aliases": ["eggs", "whole egg", "egg white", "egg whites", "egg yolk", "dried egg", "powdered egg", "liquid egg", "albumen", "egg albumen"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "soy protein isolate",
+      "aliases": ["soy protein", "isolated soy protein", "textured soy protein"],
+      "status": "safe", "category": "safe_protein",
+      "notes": "GOS is removed during isolation. Distinct from soy flour and whole soybeans." },
+    { "name": "whey protein isolate",
+      "aliases": ["whey isolate", "whey protein isolate"],
+      "status": "safe", "category": "safe_protein",
+      "notes": "Lactose is removed during isolation. Distinct from whey concentrate." },
+    { "name": "gelatin",
+      "aliases": ["gelatine", "beef gelatin", "pork gelatin", "fish gelatin", "hydrolyzed collagen", "collagen peptides", "collagen protein"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "chicken",
+      "aliases": ["chicken breast", "chicken thigh", "chicken leg", "ground chicken", "cooked chicken", "roasted chicken", "grilled chicken", "chicken meat", "chicken pieces", "chicken fillet", "mechanically separated chicken"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "beef",
+      "aliases": ["ground beef", "beef mince", "beef steak", "roast beef", "cooked beef", "beef meat", "beef extract", "dried beef"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "pork",
+      "aliases": ["ground pork", "pork loin", "pork shoulder", "pork mince", "cooked pork", "ham", "prosciutto", "bacon", "pancetta", "pork rinds"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "turkey",
+      "aliases": ["ground turkey", "turkey breast", "turkey meat", "cooked turkey", "roast turkey", "turkey mince"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "lamb",
+      "aliases": ["ground lamb", "lamb mince", "lamb chop", "cooked lamb", "mutton"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "tuna",
+      "aliases": ["canned tuna", "tuna fish", "albacore tuna", "skipjack tuna", "tuna in water", "tuna in oil"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "salmon",
+      "aliases": ["canned salmon", "atlantic salmon", "smoked salmon", "salmon fillet", "pink salmon", "lox", "nova lox", "gravlax", "cured salmon"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "fish",
+      "aliases": ["white fish", "cod", "tilapia", "haddock", "pollock", "halibut", "sole", "flounder", "sardine", "sardines", "anchovies", "anchovy"],
+      "status": "safe", "category": "safe_protein" },
+    { "name": "shrimp",
+      "aliases": ["prawns", "prawn", "cooked shrimp", "shrimp meat", "langoustine"],
+      "status": "safe", "category": "safe_protein" },
+
+    { "name": "salt",
+      "aliases": ["sea salt", "sodium chloride", "iodized salt", "kosher salt", "himalayan salt", "rock salt", "fleur de sel"],
+      "status": "safe", "category": "safe_additive" },
+    { "name": "citric acid",
+      "aliases": ["e330", "sodium citrate", "potassium citrate", "calcium citrate"],
+      "status": "safe", "category": "safe_additive" },
+    { "name": "lactic acid",
+      "aliases": ["e270", "sodium lactate", "calcium lactate", "potassium lactate"],
+      "status": "safe", "category": "safe_additive" },
+    { "name": "ascorbic acid",
+      "aliases": ["vitamin c", "e300", "l-ascorbic acid", "sodium ascorbate", "calcium ascorbate"],
+      "status": "safe", "category": "safe_additive" },
+    { "name": "xanthan gum",
+      "aliases": ["e415", "xanthan"],
+      "status": "safe", "category": "safe_additive" },
+    { "name": "guar gum",
+      "aliases": ["e412", "guaran"],
+      "status": "safe", "category": "safe_additive" },
+    { "name": "soy lecithin",
+      "aliases": ["lecithin", "e322", "sunflower lecithin", "rapeseed lecithin"],
+      "status": "safe", "category": "safe_additive",
+      "notes": "Emulsifier derived from soy but contains no GOS — safe even for soy-sensitive FODMAP followers." },
+    { "name": "baking soda",
+      "aliases": ["sodium bicarbonate", "bicarbonate of soda", "e500", "baking powder", "cream of tartar", "potassium bitartrate"],
+      "status": "safe", "category": "safe_additive" },
+    { "name": "vinegar",
+      "aliases": ["white vinegar", "apple cider vinegar", "cider vinegar", "wine vinegar", "red wine vinegar", "white wine vinegar", "rice vinegar", "balsamic vinegar", "sherry vinegar", "malt vinegar", "acetic acid"],
+      "status": "safe", "category": "safe_additive",
+      "notes": "Low-FODMAP in typical culinary amounts." },
+    { "name": "vanilla",
+      "aliases": ["vanilla extract", "vanilla bean", "vanilla bean paste", "vanilla powder", "vanilla flavoring"],
+      "status": "safe", "category": "safe_additive" },
+    { "name": "cocoa powder",
+      "aliases": ["cocoa", "cacao", "cacao powder", "dutch process cocoa", "dark chocolate"],
+      "status": "safe", "category": "safe_additive",
+      "notes": "Low-FODMAP up to 2 tablespoons (10g) cocoa powder or 30g dark chocolate (>70% cocoa)." },
+    { "name": "black pepper",
+      "aliases": ["pepper", "white pepper", "peppercorn", "ground pepper", "cracked pepper"],
+      "status": "safe", "category": "safe_additive" },
+    { "name": "psyllium husk",
+      "aliases": ["psyllium", "psyllium fiber", "psyllium husks", "ispaghula", "ispaghula husk"],
+      "status": "safe", "category": "safe_additive" },
+
+    { "name": "carrot",
+      "aliases": ["carrots", "baby carrots", "carrot sticks", "carrot juice", "shredded carrot"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "zucchini",
+      "aliases": ["courgette", "zoodles", "zucchini noodles", "summer squash", "yellow squash"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "bell pepper",
+      "aliases": ["capsicum", "red pepper", "green pepper", "yellow pepper", "orange pepper", "red capsicum", "green capsicum", "yellow capsicum", "sweet pepper", "roasted pepper"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "spinach",
+      "aliases": ["baby spinach", "frozen spinach", "spinach leaves", "wilted spinach"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "lettuce",
+      "aliases": ["romaine", "romaine lettuce", "iceberg lettuce", "butter lettuce", "mixed greens", "arugula", "rocket", "salad leaves", "mixed salad"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "cucumber",
+      "aliases": ["english cucumber", "lebanese cucumber", "mini cucumber", "sliced cucumber"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "potato",
+      "aliases": ["potatoes", "white potato", "red potato", "yukon gold", "russet potato", "new potato", "mashed potato", "roasted potato", "baked potato"],
+      "status": "safe", "category": "safe_vegetable",
+      "notes": "Low-FODMAP at typical serving sizes. Sweet potato is dose-dependent — see separate entry." },
+    { "name": "tomato",
+      "aliases": ["tomatoes", "cherry tomatoes", "roma tomato", "beefsteak tomato", "grape tomatoes", "heirloom tomato", "sliced tomato", "diced tomato", "canned tomato", "crushed tomato", "san marzano"],
+      "status": "safe", "category": "safe_vegetable",
+      "notes": "Low-FODMAP up to 1 medium tomato per serve. Tomato paste and concentrate are higher-FODMAP — see separate entry." },
+    { "name": "green beans",
+      "aliases": ["french beans", "string beans", "runner beans", "haricot vert", "snap beans", "fine beans"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "bok choy",
+      "aliases": ["pak choy", "pak choi", "baby bok choy", "bok choi", "chinese chard"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "cabbage",
+      "aliases": ["green cabbage", "red cabbage", "purple cabbage", "napa cabbage", "chinese leaf", "shredded cabbage"],
+      "status": "safe", "category": "safe_vegetable",
+      "notes": "Green and red cabbage are low-FODMAP up to 1 cup. Savoy cabbage is high-FODMAP — see separate entry." },
+    { "name": "kale",
+      "aliases": ["curly kale", "lacinato kale", "dinosaur kale", "cavolo nero", "kale chips"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "eggplant",
+      "aliases": ["aubergine", "brinjal", "roasted eggplant", "grilled eggplant"],
+      "status": "safe", "category": "safe_vegetable" },
+    { "name": "broccoli",
+      "aliases": ["broccoli florets", "broccolini", "tenderstem broccoli", "broccoli rabe", "rapini"],
+      "status": "caution", "category": "gos",
+      "notes": "Low-FODMAP up to 3/4 cup (75g) florets. Contains GOS and fructans above that threshold. Broccoli stalks are higher-FODMAP than florets." },
+    { "name": "sweet potato",
+      "aliases": ["sweet potatoes", "yam", "kumara", "roasted sweet potato"],
+      "status": "caution", "category": "polyol",
+      "notes": "Low-FODMAP up to 70g. Contains mannitol above that serving." },
+    { "name": "pumpkin",
+      "aliases": ["butternut squash", "butternut pumpkin", "acorn squash", "kabocha squash", "canned pumpkin", "pumpkin puree"],
+      "status": "caution", "category": "polyol",
+      "notes": "Low-FODMAP up to 30g. High-FODMAP at larger servings due to sorbitol and mannitol." },
+    { "name": "corn",
+      "aliases": ["sweetcorn", "sweet corn", "corn kernels", "corn on the cob", "canned corn", "frozen corn", "baby corn"],
+      "status": "caution", "category": "polyol",
+      "notes": "Low-FODMAP up to 1/2 cob or 38g kernels. Contains sorbitol above that threshold. Popcorn is low-FODMAP up to 7 cups (plain, air-popped)." }
+  ]
+}

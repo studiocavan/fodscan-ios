@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+
+# Xcode user state — machine-specific, contains absolute paths
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+
+# Xcode derived data and build artifacts
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# CocoaPods (not used, but ignore if added later)
+Pods/
+Podfile.lock
+
+# Fastlane (not used, but ignore if added later)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Environment / secrets (never commit these)
+.env
+*.p8
+*.p12
+*.pem
+secrets.json

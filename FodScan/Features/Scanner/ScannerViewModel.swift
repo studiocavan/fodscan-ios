@@ -4,6 +4,7 @@ import Observation
 enum ScanMode: String, CaseIterable {
     case barcode = "Barcode"
     case ingredients = "Ingredients"
+    case lookup = "Search"
 }
 
 enum ScanState {
@@ -20,13 +21,21 @@ final class ScannerViewModel {
     private(set) var lastBarcode: String?
     private(set) var scanResultID: UUID?
     private(set) var rawIngredientsText: String?
+    let entries: [FodmapEntry]
 
     private let offClient = OpenFoodFactsClient()
-    private let engine: FodmapEngine
+    private var engine: FodmapEngine
+    private let baseRuleset: Ruleset
 
     init() {
         let ruleset = (try? RulesetLoader.load()) ?? Ruleset(version: "error", entries: [])
+        baseRuleset = ruleset
         engine = FodmapEngine(ruleset: ruleset)
+        entries = ruleset.entries
+    }
+
+    func updateOverrides(_ overrides: [FodmapEntry]) {
+        engine = FodmapEngine(ruleset: baseRuleset, overrides: overrides)
     }
 
     func scan(barcode: String) async {

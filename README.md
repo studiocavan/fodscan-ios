@@ -6,9 +6,9 @@ Scan a barcode or point the camera at an ingredient panel — FodScan checks aga
 
 ## Features
 
-- **Barcode scan** — looks up the product in Open Food Facts, parses the ingredient list, and runs it through the local FODMAP engine
-- **Ingredient scan** — OCR mode for unlabeled products or anything OFF doesn't have
-- **Local FODMAP engine** — bundled ruleset of 50+ ingredients with aliases, categories, and notes. Works fully offline
+- **Barcode scan** — looks up the product in Open Food Facts (requires internet), parses the ingredient list, and runs it through the local FODMAP engine
+- **Ingredient scan** — OCR mode that reads the label directly; works fully offline
+- **Local FODMAP engine** — bundled ruleset of 160+ ingredients with aliases, categories, and notes. Analysis runs entirely on-device
 - **Four-level verdict** — Safe (green), Caution (yellow), Avoid (red), Unknown (gray)
 - **Ingredient breakdown** — shows exactly which ingredients triggered the verdict and why
 - **Scan history** — recent scans grouped by day
@@ -58,7 +58,7 @@ Tech stack: Swift 5.10, SwiftUI, VisionKit, SwiftData, FoundationModels, URLSess
 
 ## Disclaimer
 
-FodScan is a personal tool, not medical advice. The FODMAP ruleset is based on publicly available Monash University research but is not a substitute for guidance from a dietitian. Individual tolerances vary — use this as a starting point, not a final answer.
+FodScan is a personal tool, not medical advice. The FODMAP ruleset is independently curated from publicly available research, including publications by Monash University, but is not sourced from the Monash FODMAP app database and is not affiliated with or endorsed by Monash University. It is not a substitute for guidance from a registered dietitian. Individual tolerances vary — use this as a starting point, not a final answer.
 
 ## License
 

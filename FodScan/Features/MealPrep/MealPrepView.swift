@@ -14,6 +14,7 @@ private struct MealTemplate {
 }
 
 private let mealTemplates: [MealTemplate] = [
+    // Quick
     MealTemplate(
         name: "Greek Salad",
         effort: "~10 min",
@@ -27,10 +28,29 @@ private let mealTemplates: [MealTemplate] = [
         ingredients: ["egg", "butter", "spinach", "salt", "black pepper"]
     ),
     MealTemplate(
+        name: "Dalmatian Grilled Fish",
+        effort: "~20 min",
+        sfSymbol: "fish",
+        ingredients: ["sea bass", "potato", "olive oil", "lemon", "salt", "black pepper"]
+    ),
+    MealTemplate(
+        name: "Fish Tacos",
+        effort: "~20 min",
+        sfSymbol: "fork.knife",
+        ingredients: ["cod", "cabbage", "tomato", "lettuce", "olive oil", "vinegar", "salt", "black pepper"]
+    ),
+    // Medium
+    MealTemplate(
         name: "Shakshuka",
         effort: "~25 min",
         sfSymbol: "sun.horizon.fill",
         ingredients: ["egg", "tomato", "bell pepper", "olive oil", "salt", "black pepper"]
+    ),
+    MealTemplate(
+        name: "Chicken Taco Bowl",
+        effort: "~25 min",
+        sfSymbol: "fork.knife.circle",
+        ingredients: ["rice", "chicken", "tomato", "bell pepper", "lettuce", "olive oil", "salt", "black pepper"]
     ),
     MealTemplate(
         name: "Quinoa Tabbouleh",
@@ -50,11 +70,12 @@ private let mealTemplates: [MealTemplate] = [
         sfSymbol: "fish.fill",
         ingredients: ["salmon", "zucchini", "tomato", "bell pepper", "olive oil", "salt", "black pepper"]
     ),
+    // Longer
     MealTemplate(
-        name: "Roast Chicken & Veg",
-        effort: "~1 hour",
-        sfSymbol: "clock",
-        ingredients: ["chicken", "potato", "carrot", "zucchini", "olive oil", "salt", "black pepper"]
+        name: "Chicken Paprikash",
+        effort: "~45 min",
+        sfSymbol: "flame.fill",
+        ingredients: ["chicken", "tomato", "bell pepper", "olive oil", "sour cream", "salt", "black pepper"]
     ),
     MealTemplate(
         name: "Stuffed Bell Peppers",
@@ -62,11 +83,28 @@ private let mealTemplates: [MealTemplate] = [
         sfSymbol: "circle.grid.2x2.fill",
         ingredients: ["bell pepper", "rice", "beef", "tomato", "olive oil", "salt", "black pepper"]
     ),
+    MealTemplate(
+        name: "Roast Chicken & Veg",
+        effort: "~1 hour",
+        sfSymbol: "clock",
+        ingredients: ["chicken", "potato", "carrot", "zucchini", "olive oil", "salt", "black pepper"]
+    ),
+    MealTemplate(
+        name: "Peka-Style Chicken",
+        effort: "~2 hours",
+        sfSymbol: "clock.arrow.2.circlepath",
+        ingredients: ["chicken", "potato", "carrot", "zucchini", "tomato", "bell pepper", "olive oil", "salt", "black pepper"]
+    ),
+    MealTemplate(
+        name: "Pasticada",
+        effort: "~2 hours",
+        sfSymbol: "clock.badge.checkmark",
+        ingredients: ["beef", "carrot", "potato", "tomato", "olive oil", "vinegar", "salt", "black pepper"]
+    ),
 ]
 
 struct MealPrepView: View {
     @Environment(ScannerViewModel.self) private var viewModel
-    @State private var allEntries: [FodmapEntry] = []
     @State private var ingredientText = ""
     @State private var items: [PrepItem] = []
     @FocusState private var fieldFocused: Bool
@@ -75,7 +113,7 @@ struct MealPrepView: View {
         let q = ingredientText.trimmingCharacters(in: .whitespaces).lowercased()
         guard q.count >= 2 else { return [] }
         return Array(
-            allEntries.filter {
+            viewModel.entries.filter {
                 $0.name.localizedCaseInsensitiveContains(q) ||
                 $0.aliases.contains { $0.localizedCaseInsensitiveContains(q) }
             }
@@ -130,11 +168,6 @@ struct MealPrepView: View {
                 ToolbarItem(placement: .destructiveAction) {
                     Button("Clear All", role: .destructive) { items = [] }
                 }
-            }
-        }
-        .onAppear {
-            if allEntries.isEmpty {
-                allEntries = (try? RulesetLoader.load())?.entries ?? []
             }
         }
     }

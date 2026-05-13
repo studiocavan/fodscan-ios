@@ -11,7 +11,7 @@ struct DataScannerRepresentable: UIViewControllerRepresentable {
         switch mode {
         case .barcode:
             types = [.barcode()]
-        case .ingredients:
+        case .ingredients, .lookup:
             types = [.text(textContentType: nil)]
         }
 
@@ -67,7 +67,7 @@ struct DataScannerRepresentable: UIViewControllerRepresentable {
                         return
                     }
                 }
-            case .ingredients:
+            case .ingredients, .lookup:
                 // Sort text blocks top-to-bottom so the ingredient string reads naturally
                 let lines = allItems
                     .compactMap { item -> (CGFloat, String)? in

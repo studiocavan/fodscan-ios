@@ -28,6 +28,13 @@ struct HomeView: View {
                 .padding()
             }
             .navigationTitle("FodScan")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    NavigationLink { SettingsView() } label: {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            }
         }
     }
 }

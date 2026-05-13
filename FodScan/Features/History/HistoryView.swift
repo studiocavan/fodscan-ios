@@ -4,11 +4,16 @@ import SwiftData
 struct HistoryView: View {
     @Query(sort: \ScanRecord.date, order: .reverse) private var records: [ScanRecord]
     @Environment(\.modelContext) private var modelContext
+    @State private var showingClearConfirm = false
 
     var body: some View {
         List {
             ForEach(records) { record in
-                ScanHistoryRow(record: record)
+                NavigationLink {
+                    ScanDetailView(record: record)
+                } label: {
+                    ScanHistoryRow(record: record)
+                }
             }
             .onDelete(perform: delete)
         }
@@ -25,7 +30,23 @@ struct HistoryView: View {
         }
         .toolbar {
             if !records.isEmpty {
-                EditButton()
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Clear All", role: .destructive) {
+                        showingClearConfirm = true
+                    }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    EditButton()
+                }
+            }
+        }
+        .confirmationDialog(
+            "Delete all \(records.count) scan\(records.count == 1 ? "" : "s")?",
+            isPresented: $showingClearConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Delete All", role: .destructive) {
+                records.forEach { modelContext.delete($0) }
             }
         }
     }
@@ -36,6 +57,51 @@ struct HistoryView: View {
         }
     }
 }
+
+// MARK: - Detail view
+
+private struct ScanDetailView: View {
+    let record: ScanRecord
+
+    var body: some View {
+        List {
+            Section {
+                HStack {
+                    Image(systemName: record.verdictStatus.iconName)
+                        .foregroundStyle(record.verdictStatus.color)
+                    Text(record.verdictStatus.label)
+                        .foregroundStyle(record.verdictStatus.color)
+                        .fontWeight(.semibold)
+                }
+                if let barcode = record.barcode {
+                    LabeledContent("Barcode", value: barcode)
+                }
+                LabeledContent("Date", value: record.date.formatted(date: .long, time: .shortened))
+            }
+
+            if !record.flaggedIngredients.isEmpty {
+                Section("Flagged") {
+                    ForEach(record.flaggedIngredients, id: \.self) { name in
+                        Text(name.capitalized)
+                            .font(.subheadline)
+                    }
+                }
+            }
+
+            if let text = record.ingredientsText, !text.isEmpty {
+                Section("All Ingredients") {
+                    Text(text)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .navigationTitle(record.productName ?? "Manual Scan")
+        .navigationBarTitleDisplayMode(.large)
+    }
+}
+
+// MARK: - Row
 
 private struct ScanHistoryRow: View {
     let record: ScanRecord

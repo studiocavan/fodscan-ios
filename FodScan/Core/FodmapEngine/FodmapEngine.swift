@@ -8,22 +8,28 @@ struct IngredientMatch {
 struct FodmapResult {
     let verdict: VerdictStatus
     let matches: [IngredientMatch]
+    let unmatchedTokens: [String]
 }
 
 struct FodmapEngine {
     private let entries: [FodmapEntry]
     private let normalizer = IngredientNormalizer()
 
-    init(ruleset: Ruleset) {
-        self.entries = ruleset.entries
+    init(ruleset: Ruleset, overrides: [FodmapEntry] = []) {
+        // Overrides come first — they shadow any bundled entry with the same name
+        self.entries = overrides + ruleset.entries
     }
 
     func analyze(_ ingredientsText: String) -> FodmapResult {
         let tokens = normalizer.tokenize(ingredientsText)
         var matches: [IngredientMatch] = []
+        var unmatched: [String] = []
 
         for token in tokens {
-            guard let entry = findMatch(for: token) else { continue }
+            guard let entry = findMatch(for: token) else {
+                unmatched.append(token)
+                continue
+            }
             // one match per ruleset entry — highest severity token wins
             if let existing = matches.firstIndex(where: { $0.entry.name == entry.name }) {
                 if entry.status > matches[existing].entry.status {
@@ -35,7 +41,7 @@ struct FodmapEngine {
         }
 
         let verdict = matches.map(\.entry.status).max() ?? .unknown
-        return FodmapResult(verdict: verdict, matches: matches)
+        return FodmapResult(verdict: verdict, matches: matches, unmatchedTokens: unmatched)
     }
 
     private func findMatch(for token: String) -> FodmapEntry? {

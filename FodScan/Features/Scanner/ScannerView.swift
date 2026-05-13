@@ -1,9 +1,11 @@
 import SwiftUI
+import SwiftData
 import VisionKit
 
 struct ScannerView: View {
     @Environment(ScannerViewModel.self) private var viewModel
     @Environment(\.modelContext) private var modelContext
+    @Query private var overrides: [IngredientOverride]
     @State private var mode: ScanMode = .ingredients
     @State private var scannedBarcode: String?
     @State private var detectedText: String?
@@ -11,12 +13,39 @@ struct ScannerView: View {
     @State private var scanTask: Task<Void, Never>?
     @State private var isModeTransitioning = false
 
+    // Lookup mode
+    @State private var lookupText = ""
+    @State private var lookupEntry: FodmapEntry?
+    @FocusState private var lookupFocused: Bool
+
+    private var lookupSuggestions: [FodmapEntry] {
+        let q = lookupText.trimmingCharacters(in: .whitespaces).lowercased()
+        guard q.count >= 2, lookupEntry == nil else { return [] }
+        return Array(
+            viewModel.entries.filter {
+                $0.name.localizedCaseInsensitiveContains(q) ||
+                $0.aliases.contains { $0.localizedCaseInsensitiveContains(q) }
+            }
+            .sorted { a, b in
+                let aPrefix = a.name.lowercased().hasPrefix(q)
+                let bPrefix = b.name.lowercased().hasPrefix(q)
+                if aPrefix != bPrefix { return aPrefix }
+                return a.name < b.name
+            }
+            .prefix(4)
+        )
+    }
+
     var body: some View {
         ZStack {
-            if !isModeTransitioning && DataScannerViewController.isSupported && DataScannerViewController.isAvailable {
-                DataScannerRepresentable(mode: mode, scannedBarcode: $scannedBarcode, detectedText: $detectedText)
-                    .id(mode)
-                    .ignoresSafeArea()
+            if mode == .lookup {
+                Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
+            } else if DataScannerViewController.isSupported && DataScannerViewController.isAvailable {
+                if !isModeTransitioning {
+                    DataScannerRepresentable(mode: mode, scannedBarcode: $scannedBarcode, detectedText: $detectedText)
+                        .id(mode)
+                        .ignoresSafeArea()
+                }
             } else {
                 ContentUnavailableView(
                     "Scanner Unavailable",
@@ -48,9 +77,11 @@ struct ScannerView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
+                    } else if mode == .lookup {
+                        lookupPanel
                     }
 
-                    if case .loading = viewModel.scanState {
+                    if case .loading = viewModel.scanState, mode != .lookup {
                         HStack(spacing: 10) {
                             ProgressView()
                             Text("Looking up product…")
@@ -61,6 +92,7 @@ struct ScannerView: View {
                     Picker("Scan mode", selection: $mode) {
                         Text("Ingredients").tag(ScanMode.ingredients)
                         Text("Barcode ↗").tag(ScanMode.barcode)
+                        Text("Search").tag(ScanMode.lookup)
                     }
                     .pickerStyle(.segmented)
 
@@ -98,29 +130,95 @@ struct ScannerView: View {
         }
         .onChange(of: viewModel.scanResultID) { _, _ in
             guard case .result(let result, let productName) = viewModel.scanState else { return }
-            let record = ScanRecord(
+            modelContext.insert(ScanRecord(
                 productName: productName,
                 barcode: viewModel.lastBarcode,
                 verdict: result.verdict.rawValue,
-                flaggedIngredients: result.matches.map(\.entry.name)
-            )
-            modelContext.insert(record)
+                flaggedIngredients: result.matches.map(\.entry.name),
+                ingredientsText: viewModel.rawIngredientsText
+            ))
+            let context = productName ?? "Manual scan"
+            for token in result.unmatchedTokens {
+                modelContext.insert(UnknownIngredient(
+                    token: token,
+                    scanContext: context,
+                    rawText: viewModel.rawIngredientsText
+                ))
+            }
         }
-        .onChange(of: mode) { _, _ in
+        .task {
+            viewModel.updateOverrides(overrides.map { $0.asFodmapEntry() })
+        }
+        .onChange(of: overrides) { _, newOverrides in
+            viewModel.updateOverrides(newOverrides.map { $0.asFodmapEntry() })
+        }
+        .onChange(of: mode) { oldValue, newValue in
             scanTask?.cancel()
             scanTask = nil
             scannedBarcode = nil
             detectedText = nil
+            lookupText = ""
+            lookupEntry = nil
             viewModel.reset()
-            // Gate the new scanner behind a layout pass so the old AVCaptureSession
-            // fully releases before the new one starts.
-            isModeTransitioning = true
-            Task {
-                try? await Task.sleep(for: .milliseconds(250))
-                isModeTransitioning = false
+            // Only need the AVCaptureSession release delay when swapping between two camera modes
+            let cameraModes: Set<ScanMode> = [.ingredients, .barcode]
+            if cameraModes.contains(oldValue) && cameraModes.contains(newValue) {
+                isModeTransitioning = true
+                Task {
+                    try? await Task.sleep(for: .milliseconds(250))
+                    isModeTransitioning = false
+                }
             }
         }
     }
+
+    // MARK: - Lookup panel
+
+    @ViewBuilder
+    private var lookupPanel: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
+            TextField("Type an ingredient…", text: $lookupText)
+                .autocorrectionDisabled()
+                .focused($lookupFocused)
+                .onChange(of: lookupText) { _, _ in lookupEntry = nil }
+            if !lookupText.isEmpty {
+                Button {
+                    lookupText = ""
+                    lookupEntry = nil
+                } label: {
+                    Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
+                }
+            }
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(Color(.systemBackground).opacity(0.9))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+
+        ForEach(lookupSuggestions, id: \.name) { entry in
+            Button {
+                lookupEntry = entry
+                lookupText = entry.name.capitalized
+                lookupFocused = false
+            } label: {
+                HStack(spacing: 10) {
+                    Circle().fill(entry.status.color).frame(width: 8, height: 8)
+                    Text(entry.name.capitalized).foregroundStyle(.primary).font(.subheadline)
+                    Spacer()
+                    Text(entry.status.label).font(.caption).foregroundStyle(entry.status.color)
+                }
+                .padding(.vertical, 2)
+            }
+            .buttonStyle(.plain)
+        }
+
+        if let entry = lookupEntry {
+            LookupEntryCard(entry: entry)
+        }
+    }
+
+    // MARK: - Result sheet
 
     @ViewBuilder
     private var resultSheetContent: some View {
@@ -136,5 +234,33 @@ struct ScannerView: View {
         default:
             EmptyView()
         }
+    }
+}
+
+private struct LookupEntryCard: View {
+    let entry: FodmapEntry
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 8) {
+                Circle().fill(entry.status.color).frame(width: 10, height: 10)
+                Text(entry.name.capitalized).font(.body.weight(.semibold))
+                Spacer()
+                Text(entry.status.label)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(entry.status.color)
+                    .padding(.horizontal, 8).padding(.vertical, 3)
+                    .background(entry.status.color.opacity(0.12))
+                    .clipShape(Capsule())
+            }
+            Text(entry.category.replacingOccurrences(of: "_", with: " ").capitalized)
+                .font(.caption).foregroundStyle(.secondary)
+            if let notes = entry.notes {
+                Text(notes).font(.caption).foregroundStyle(.secondary)
+            }
+        }
+        .padding(12)
+        .background(Color(.systemBackground).opacity(0.9))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct VerdictSheet: View {
     let result: FodmapResult
@@ -8,6 +9,7 @@ struct VerdictSheet: View {
 
     @State private var explanation: String?
     @State private var isExplaining = false
+    @State private var showingFeedback = false
 
     private var flaggedMatches: [IngredientMatch] {
         result.matches.filter { $0.entry.status != .safe }
@@ -94,9 +96,18 @@ struct VerdictSheet: View {
             .navigationTitle("Scan Result")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { showingFeedback = true } label: {
+                        Label("Report", systemImage: "flag")
+                    }
+                    .tint(.orange)
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Scan Again", action: onDismiss)
                 }
+            }
+            .sheet(isPresented: $showingFeedback) {
+                FeedbackSheet(result: result, productName: productName)
             }
         }
     }
@@ -110,6 +121,58 @@ struct VerdictSheet: View {
             productName: productName,
             rawIngredientsText: rawIngredientsText
         )
+    }
+}
+
+private struct FeedbackSheet: View {
+    let result: FodmapResult
+    let productName: String?
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    @State private var note = ""
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Scan details") {
+                    LabeledContent("Verdict", value: result.verdict.label)
+                    if let name = productName, !name.isEmpty {
+                        LabeledContent("Product", value: name)
+                    }
+                    let flagged = result.matches.map(\.entry.name)
+                    if !flagged.isEmpty {
+                        LabeledContent("Flagged", value: flagged.joined(separator: ", "))
+                    }
+                }
+                Section {
+                    TextField("What seems wrong?", text: $note, axis: .vertical)
+                        .lineLimit(3...)
+                } header: {
+                    Text("Your note")
+                } footer: {
+                    Text("Stored locally. Export from Settings → Research to share with the developer.")
+                }
+            }
+            .navigationTitle("Report Inaccuracy")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Submit") {
+                        modelContext.insert(VerdictFeedback(
+                            productName: productName,
+                            engineVerdict: result.verdict.rawValue,
+                            flaggedIngredients: result.matches.map(\.entry.name),
+                            userNote: note
+                        ))
+                        dismiss()
+                    }
+                    .disabled(note.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+        }
     }
 }
 

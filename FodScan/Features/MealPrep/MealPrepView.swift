@@ -103,7 +103,46 @@ private let mealTemplates: [MealTemplate] = [
     ),
 ]
 
+// MARK: - Template browser
+
 struct MealPrepView: View {
+    var body: some View {
+        List {
+            ForEach(mealTemplates, id: \.name) { template in
+                NavigationLink {
+                    MealPrepRecipeView(template: template)
+                } label: {
+                    HStack(spacing: 14) {
+                        Image(systemName: template.sfSymbol)
+                            .font(.title3)
+                            .foregroundStyle(.orange)
+                            .frame(width: 32)
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(template.name)
+                                .font(.body.weight(.medium))
+                            Text(template.ingredients.joined(separator: ", "))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
+                        Spacer()
+                        Text(template.effort)
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 6)
+                }
+            }
+        }
+        .navigationTitle("Meal Prep")
+        .navigationBarTitleDisplayMode(.large)
+    }
+}
+
+// MARK: - Recipe detail / ingredient checker
+
+private struct MealPrepRecipeView: View {
+    let template: MealTemplate
     @Environment(ScannerViewModel.self) private var viewModel
     @State private var ingredientText = ""
     @State private var items: [PrepItem] = []
@@ -118,7 +157,6 @@ struct MealPrepView: View {
                 $0.aliases.contains { $0.localizedCaseInsensitiveContains(q) }
             }
             .sorted { a, b in
-                // Prioritise prefix matches over contains
                 let aPrefix = a.name.lowercased().hasPrefix(q)
                 let bPrefix = b.name.lowercased().hasPrefix(q)
                 if aPrefix != bPrefix { return aPrefix }
@@ -144,32 +182,20 @@ struct MealPrepView: View {
 
             if !suggestions.isEmpty {
                 suggestionsView
-            } else if items.isEmpty {
-                templatesView
             } else {
                 ingredientList
             }
         }
-        .navigationTitle("Meal Prep")
+        .navigationTitle(template.name)
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Menu {
-                    ForEach(mealTemplates, id: \.name) { template in
-                        Button("\(template.name) (\(template.effort))") {
-                            loadTemplate(template)
-                        }
-                    }
-                } label: {
-                    Label("Templates", systemImage: "fork.knife.circle")
-                }
-            }
             if !items.isEmpty {
                 ToolbarItem(placement: .destructiveAction) {
                     Button("Clear All", role: .destructive) { items = [] }
                 }
             }
         }
+        .task { loadTemplate() }
     }
 
     // MARK: - Subviews
@@ -239,48 +265,6 @@ struct MealPrepView: View {
         .frame(maxHeight: .infinity)
     }
 
-    private var templatesView: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("Start from a template")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal)
-                    .padding(.top, 20)
-                    .padding(.bottom, 12)
-
-                ForEach(mealTemplates, id: \.name) { template in
-                    Button { loadTemplate(template) } label: {
-                        HStack(spacing: 14) {
-                            Image(systemName: template.sfSymbol)
-                                .font(.title3)
-                                .foregroundStyle(.orange)
-                                .frame(width: 32)
-                            VStack(alignment: .leading, spacing: 3) {
-                                Text(template.name)
-                                    .font(.body.weight(.medium))
-                                    .foregroundStyle(.primary)
-                                Text(template.ingredients.joined(separator: ", "))
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                    .lineLimit(1)
-                            }
-                            Spacer()
-                            Text(template.effort)
-                                .font(.caption.weight(.medium))
-                                .foregroundStyle(.secondary)
-                        }
-                        .padding(.horizontal)
-                        .padding(.vertical, 14)
-                    }
-                    .buttonStyle(.plain)
-                    Divider().padding(.leading, 60)
-                }
-            }
-        }
-        .frame(maxHeight: .infinity)
-    }
-
     private var ingredientList: some View {
         List {
             ForEach(items) { item in
@@ -302,12 +286,14 @@ struct MealPrepView: View {
         fieldFocused = false
     }
 
-    private func loadTemplate(_ template: MealTemplate) {
+    private func loadTemplate() {
         items = template.ingredients.map { name in
             PrepItem(input: name, result: viewModel.evaluate(name))
         }
     }
 }
+
+// MARK: - Row
 
 private struct PrepItemRow: View {
     let item: PrepItem

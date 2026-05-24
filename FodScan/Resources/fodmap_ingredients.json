@@ -882,6 +882,17 @@
       "status": "safe", "category": "safe_fruit" },
     { "name": "rhubarb",
       "aliases": ["rhubarb stalk", "rhubarb extract", "stewed rhubarb"],
-      "status": "safe", "category": "safe_fruit" }
+      "status": "safe", "category": "safe_fruit" },
+    { "name": "rice noodles",
+      "aliases": ["rice pasta", "gluten-free noodles", "gluten free noodles", "gf noodles", "pad thai noodles", "vermicelli", "rice vermicelli", "glass noodles", "cellophane noodles"],
+      "status": "safe", "category": "safe_grain" },
+    { "name": "pasta",
+      "aliases": ["spaghetti", "penne", "fettuccine", "tagliatelle", "linguine", "rigatoni", "fusilli", "gluten-free pasta", "gf pasta", "corn pasta", "rice pasta noodles"],
+      "status": "caution", "category": "fructan",
+      "notes": "Regular wheat pasta is high-FODMAP. Gluten-free or rice-based pasta is safe — check the label." },
+    { "name": "cheddar",
+      "aliases": ["aged cheddar", "cheddar cheese", "sharp cheddar", "mild cheddar", "medium cheddar", "extra mature cheddar", "vintage cheddar"],
+      "status": "safe", "category": "safe_protein",
+      "notes": "Aged hard cheese. Lactose is negligible — safe in normal serving sizes." }
   ]
 }

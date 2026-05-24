@@ -11,7 +11,9 @@ struct ScannerView: View {
     @State private var detectedText: String?
     @State private var showingResult = false
     @State private var scanTask: Task<Void, Never>?
-    @State private var isModeTransitioning = false
+    @State private var allergenStripped = false
+    @State private var isExtracting = false
+    @State private var showingIngredientCamera = false
 
     // Lookup mode
     @State private var lookupText = ""
@@ -38,20 +40,17 @@ struct ScannerView: View {
 
     var body: some View {
         ZStack {
-            if mode == .lookup {
-                Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
-            } else if DataScannerViewController.isSupported && DataScannerViewController.isAvailable {
-                if !isModeTransitioning {
-                    DataScannerRepresentable(mode: mode, scannedBarcode: $scannedBarcode, detectedText: $detectedText)
-                        .id(mode)
-                        .ignoresSafeArea()
-                }
-            } else {
+            if mode == .barcode && DataScannerViewController.isSupported && DataScannerViewController.isAvailable {
+                DataScannerRepresentable(scannedBarcode: $scannedBarcode)
+                    .ignoresSafeArea()
+            } else if mode == .barcode {
                 ContentUnavailableView(
                     "Scanner Unavailable",
                     systemImage: "barcode.viewfinder",
                     description: Text("This device does not support barcode scanning.")
                 )
+            } else {
+                Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
             }
 
             VStack {
@@ -59,24 +58,7 @@ struct ScannerView: View {
 
                 VStack(spacing: 12) {
                     if mode == .ingredients {
-                        if let text = detectedText {
-                            Text(text.prefix(80) + (text.count > 80 ? "…" : ""))
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .lineLimit(2)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-
-                            Button("Analyze Ingredients") {
-                                viewModel.analyzeIngredients(text: text)
-                                showingResult = true
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .tint(.green)
-                        } else {
-                            Text("Point camera at the ingredient list")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
+                        ingredientPanel
                     } else if mode == .lookup {
                         lookupPanel
                     }
@@ -109,10 +91,27 @@ struct ScannerView: View {
                 .padding(.bottom, 48)
             }
         }
+        .fullScreenCover(isPresented: $showingIngredientCamera) {
+            IngredientCaptureView { image in
+                showingIngredientCamera = false
+                isExtracting = true
+                Task {
+                    let raw = await recognizeIngredientText(in: image)
+                    let result = stripAllergenAdvisories(from: raw)
+                    detectedText = result.text
+                    allergenStripped = result.allergenWarningsRemoved
+                    isExtracting = false
+                }
+            } onCancel: {
+                showingIngredientCamera = false
+            }
+            .ignoresSafeArea()
+        }
         .sheet(isPresented: $showingResult, onDismiss: {
             viewModel.reset()
             scannedBarcode = nil
             detectedText = nil
+            allergenStripped = false
         }) {
             resultSheetContent
         }
@@ -152,23 +151,70 @@ struct ScannerView: View {
         .onChange(of: overrides) { _, newOverrides in
             viewModel.updateOverrides(newOverrides.map { $0.asFodmapEntry() })
         }
-        .onChange(of: mode) { oldValue, newValue in
+        .onChange(of: mode) { _, _ in
             scanTask?.cancel()
             scanTask = nil
             scannedBarcode = nil
             detectedText = nil
+            allergenStripped = false
             lookupText = ""
             lookupEntry = nil
             viewModel.reset()
-            // Only need the AVCaptureSession release delay when swapping between two camera modes
-            let cameraModes: Set<ScanMode> = [.ingredients, .barcode]
-            if cameraModes.contains(oldValue) && cameraModes.contains(newValue) {
-                isModeTransitioning = true
-                Task {
-                    try? await Task.sleep(for: .milliseconds(250))
-                    isModeTransitioning = false
-                }
+        }
+    }
+
+    // MARK: - Ingredient panel
+
+    @ViewBuilder
+    private var ingredientPanel: some View {
+        if isExtracting {
+            HStack(spacing: 8) {
+                ProgressView().controlSize(.small)
+                Text("Reading ingredients…")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
+        } else if let text = detectedText {
+            Text(text.prefix(120) + (text.count > 120 ? "…" : ""))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(3)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            if allergenStripped {
+                Label("Allergen warnings excluded — not relevant for FODMAP", systemImage: "info.circle")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+
+            HStack(spacing: 10) {
+                Button("Retake") {
+                    detectedText = nil
+                    allergenStripped = false
+                    showingIngredientCamera = true
+                }
+                .buttonStyle(.bordered)
+
+                Button("Analyze Ingredients") {
+                    viewModel.analyzeIngredients(text: text)
+                    showingResult = true
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.green)
+            }
+        } else {
+            Text("Snap a photo of the ingredients list")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+
+            Button {
+                showingIngredientCamera = true
+            } label: {
+                Label("Snap Photo", systemImage: "camera.fill")
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.green)
         }
     }
 

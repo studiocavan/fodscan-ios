@@ -38,6 +38,7 @@ struct SettingsView: View {
             researchSection
             dataSourcesSection
             aboutSection
+            legalSection
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.large)
@@ -155,6 +156,19 @@ struct SettingsView: View {
             Link(destination: URL(string: "https://github.com/studiocavan/fodscan-ios")!) {
                 Label("Source on GitHub", systemImage: "chevron.left.forwardslash.chevron.right")
             }
+        }
+    }
+
+    private var legalSection: some View {
+        Section {
+            Link(destination: URL(string: "https://github.com/studiocavan/fodscan-ios/blob/main/PRIVACY.md")!) {
+                Label("Privacy Policy", systemImage: "hand.raised")
+            }
+        } header: {
+            Text("Legal")
+        } footer: {
+            Text("FodScan is a dietary reference tool and does not provide medical advice. FODMAP information is based on Monash University research and is for informational purposes only. Consult a registered dietitian or doctor before making dietary changes.")
+                .font(.caption)
         }
     }
 
